@@ -1,13 +1,16 @@
 "use client";
 
-import { Heart, Home, ListMusic, Menu, Search } from "lucide-react";
+import { Heart, Home, ListMusic, Menu, Radio, Search } from "lucide-react";
 import clsx from "clsx";
+import { useLive } from "@/components/providers/live-provider";
 import { usePlayer } from "@/components/providers/player-provider";
 import { useUI } from "@/components/providers/ui-provider";
+import { LiveDot } from "@/components/ui/live-dot";
 
 export function MobileNav() {
   const { view, navigate, setSearchOpen, setSidebarOpen, searchOpen } = useUI();
   const { queue } = usePlayer();
+  const { isLive } = useLive();
 
   const items = [
     {
@@ -16,6 +19,14 @@ export function MobileNav() {
       icon: Home,
       active: view.type === "home",
       onClick: () => navigate({ type: "home" }),
+    },
+    {
+      key: "live",
+      label: "En vivo",
+      icon: Radio,
+      active: view.type === "live",
+      live: isLive,
+      onClick: () => navigate({ type: "live" }),
     },
     {
       key: "search",
@@ -50,7 +61,7 @@ export function MobileNav() {
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-[60] border-t border-white/[0.08] bg-[#070a14]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-5">
+      <div className="mx-auto grid max-w-md grid-cols-6">
         {items.map((item) => {
           const Icon = item.icon;
           return (
@@ -66,6 +77,11 @@ export function MobileNav() {
               )}
             >
               <Icon className="h-[18px] w-[18px]" />
+              {item.key === "live" ? (
+                <span className="absolute right-[26%] top-1.5">
+                  <LiveDot active={isLive} className="h-1.5 w-1.5" />
+                </span>
+              ) : null}
               {item.badge ? (
                 <span className="absolute right-[26%] top-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-violet-500 px-0.5 text-[8px] font-bold text-white">
                   {item.badge}

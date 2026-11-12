@@ -88,7 +88,10 @@ export function sanitizeTrack(value: unknown): Track | null {
     reasons: Array.isArray(value.reasons)
       ? value.reasons.filter((reason): reason is string => typeof reason === "string").slice(0, 6)
       : [],
-    source: value.source === "official" ? "official" : "innertube",
+    source:
+      value.source === "official" || value.source === "channel"
+        ? value.source
+        : "innertube",
   };
 }
 

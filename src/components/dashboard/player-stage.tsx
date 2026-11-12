@@ -188,7 +188,11 @@ export function PlayerStage() {
                 {MEDIA_LABELS[current.category]}
               </span>
               <span className="rounded-full border border-white/10 bg-black/40 px-2 py-0.5 text-[9px] font-medium text-slate-300 backdrop-blur">
-                {current.source === "official" ? "API oficial" : "Modo abierto"}
+                {current.source === "official"
+                  ? "API oficial"
+                  : current.source === "channel"
+                    ? "Canal de la iglesia"
+                    : "Modo abierto"}
               </span>
             </div>
 

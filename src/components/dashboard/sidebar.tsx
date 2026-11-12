@@ -18,19 +18,23 @@ import {
   Play,
   Plus,
   Podcast,
+  Radio,
   Search,
   Sparkles,
   X,
 } from "lucide-react";
 import clsx from "clsx";
 import { useLibrary } from "@/components/providers/library-provider";
+import { useLive } from "@/components/providers/live-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { usePlayer } from "@/components/providers/player-provider";
+import { LiveDot } from "@/components/ui/live-dot";
 import type { Category, View } from "@/lib/types";
 import { useSearch } from "@/components/providers/search-provider";
 
 const NAV_ITEMS = [
   { type: "home" as const, label: "Inicio", icon: Home },
+  { type: "live" as const, label: "En vivo", icon: Radio },
   { type: "search" as const, label: "Buscar", icon: Search },
   { type: "favorites" as const, label: "Favoritos", icon: Heart },
   { type: "history" as const, label: "Historial", icon: History },
@@ -43,9 +47,9 @@ const CATEGORY_ITEMS: Array<{
   icon: typeof Music4;
   color: string;
 }> = [
-  { category: "alabanza", label: "Alabanza", icon: Music4, color: "text-violet-300" },
-  { category: "adoracion", label: "Adoración", icon: Sparkles, color: "text-cyan-300" },
-  { category: "predicacion", label: "Predicaciones", icon: Mic2, color: "text-fuchsia-300" },
+  { category: "alabanza", label: "Alabanzas", icon: Music4, color: "text-violet-300" },
+  { category: "adoracion", label: "Adoraciones", icon: Sparkles, color: "text-cyan-300" },
+  { category: "predicacion", label: "Prédicas", icon: Mic2, color: "text-fuchsia-300" },
   { category: "podcast", label: "Podcasts", icon: Podcast, color: "text-amber-300" },
 ];
 
@@ -61,6 +65,7 @@ function SidebarContent({ onNavigate, onClose }: SidebarContentProps) {
     useLibrary();
   const { queue } = usePlayer();
   const { params } = useSearch();
+  const { isLive } = useLive();
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState("");
 
@@ -141,6 +146,9 @@ function SidebarContent({ onNavigate, onClose }: SidebarContentProps) {
               >
                 <Icon className="h-[17px] w-[17px]" />
                 <span className="flex-1 text-left">{item.label}</span>
+                {item.type === "live" ? (
+                  <LiveDot active={isLive} className="h-1.5 w-1.5" />
+                ) : null}
                 {typeof count === "number" && count > 0 ? (
                   <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-slate-300">
                     {count}
@@ -151,7 +159,7 @@ function SidebarContent({ onNavigate, onClose }: SidebarContentProps) {
           })}
         </nav>
 
-        <p className="sidebar-label">Explorar</p>
+        <p className="sidebar-label">Catedral de Fe</p>
         <div className="flex flex-col gap-0.5">
           {CATEGORY_ITEMS.map((item) => {
             const Icon = item.icon;

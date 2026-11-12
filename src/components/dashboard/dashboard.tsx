@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import { ArrowRight, ListMusic, Play } from "lucide-react";
 import { LibraryProvider, useLibrary } from "@/components/providers/library-provider";
+import { ChurchProvider } from "@/components/providers/church-provider";
+import { LiveProvider } from "@/components/providers/live-provider";
 import { PlayerProvider, usePlayer } from "@/components/providers/player-provider";
 import { SearchProvider, useSearch } from "@/components/providers/search-provider";
 import { UIProvider, useUI } from "@/components/providers/ui-provider";
@@ -164,11 +166,15 @@ export function Dashboard() {
   return (
     <UIProvider>
       <LibraryProvider>
-        <PlayerProvider>
-          <SearchProvider>
-            <DashboardInner />
-          </SearchProvider>
-        </PlayerProvider>
+        <ChurchProvider>
+          <LiveProvider>
+            <PlayerProvider>
+              <SearchProvider>
+                <DashboardInner />
+              </SearchProvider>
+            </PlayerProvider>
+          </LiveProvider>
+        </ChurchProvider>
       </LibraryProvider>
     </UIProvider>
   );

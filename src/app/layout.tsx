@@ -17,7 +17,7 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "CristianPlay — Worship OS",
   description:
-    "Dashboard futurista para buscar alabanzas, adoración, predicaciones y podcasts cristianos de YouTube, con playlists, favoritos y cola inteligente.",
+    "Dashboard para alabanzas, adoraciones, predicaciones, podcasts y transmisiones en vivo de Catedral de Fe · Centro de Avivamiento, con playlists, favoritos y cola inteligente.",
   applicationName: "CristianPlay",
   keywords: [
     "alabanza",

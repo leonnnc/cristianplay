@@ -3,8 +3,10 @@
 import { useSyncExternalStore } from "react";
 import { Menu, Search, Sparkles } from "lucide-react";
 import { useLibrary } from "@/components/providers/library-provider";
+import { useLive } from "@/components/providers/live-provider";
 import { useSearch } from "@/components/providers/search-provider";
 import { useUI } from "@/components/providers/ui-provider";
+import { LiveDot } from "@/components/ui/live-dot";
 import { formatClock, formatLongDate, plural } from "@/lib/format";
 import { CATEGORY_LABELS } from "@/lib/types";
 
@@ -36,9 +38,10 @@ function useNow(): Date | null {
 }
 
 export function TopBar() {
-  const { view, setSidebarOpen, setSearchOpen } = useUI();
+  const { view, navigate, setSidebarOpen, setSearchOpen } = useUI();
   const { library } = useLibrary();
   const { params } = useSearch();
+  const { isLive } = useLive();
   const now = useNow();
 
   const openSearch = () => {
@@ -55,6 +58,9 @@ export function TopBar() {
         ? "Explorar música y predicaciones"
         : CATEGORY_LABELS[params.category];
     eyebrow = params.query ? `Búsqueda · ${params.query}` : "Explorar";
+  } else if (view.type === "live") {
+    title = "En vivo · Catedral de Fe";
+    eyebrow = isLive ? "Transmitiendo ahora" : "Transmisiones de la iglesia";
   } else if (view.type === "favorites") {
     title = "Favoritos";
     eyebrow = plural(library.favorites.length, "guardado", "guardados");
@@ -93,6 +99,17 @@ export function TopBar() {
           {title}
         </h1>
       </div>
+
+      {isLive ? (
+        <button
+          type="button"
+          onClick={() => navigate({ type: "live" })}
+          className="hidden items-center gap-1.5 rounded-full border border-rose-400/40 bg-rose-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-rose-100 transition hover:bg-rose-500/25 sm:flex"
+        >
+          <LiveDot active className="h-1.5 w-1.5" />
+          En vivo
+        </button>
+      ) : null}
 
       <button
         type="button"

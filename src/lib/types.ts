@@ -11,7 +11,7 @@ export type DurationFilter = "any" | "short" | "medium" | "long";
 
 export type SortOrder = "relevance" | "date" | "views";
 
-export type SearchProvider = "official" | "innertube";
+export type SearchProvider = "official" | "innertube" | "channel";
 
 export interface Track {
   /** YouTube video id */
@@ -74,6 +74,7 @@ export interface AppUser {
 
 export type View =
   | { type: "home" }
+  | { type: "live" }
   | { type: "search"; category: Category }
   | { type: "favorites" }
   | { type: "history" }
@@ -82,9 +83,9 @@ export type View =
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   todas: "Todo",
-  alabanza: "Alabanza",
-  adoracion: "Adoración",
-  predicacion: "Predicaciones",
+  alabanza: "Alabanzas",
+  adoracion: "Adoraciones",
+  predicacion: "Prédicas",
   podcast: "Podcasts",
 };
 

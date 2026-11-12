@@ -1,17 +1,26 @@
 # CristianPlay
 
-Dashboard web para descubrir y reproducir música de alabanza, adoración y
-predicaciones cristianas de YouTube. Interfaz oscura tipo "glassmorphism" con
-gradientes violeta/cian, reproductor central, buscador lateral y biblioteca
-personal (playlists, favoritos, historial y cola).
+Dashboard web para descubrir y reproducir alabanzas, adoraciones,
+predicaciones y podcasts de la iglesia **Catedral de Fe · Centro de
+Avivamiento**, además de sus transmisiones en vivo. Interfaz oscura tipo
+"glassmorphism" con gradientes violeta/cian, reproductor central, buscador
+lateral y biblioteca personal (playlists, favoritos, historial y cola).
 
 ## Características
 
-- **Búsqueda enfocada**: consulta YouTube y filtra/ordena por relevancia
-  cristiana (alabanza, adoración, predicación y podcasts). Descarta contenido
-  claramente secular (reggaetón, parodias, karaoke, etc.).
+- **Secciones de la iglesia**: Alabanzas, Adoraciones, Prédicas y Podcasts se
+  llenan con los videos del canal
+  [@CatedraldeFeCDF](https://www.youtube.com/@CatedraldeFeCDF) y se clasifican
+  automáticamente por categoría.
+- **En vivo con horario**: indicador `EN VIVO` parpadeante cuando YouTube
+  confirma el directo; `OFF` cuando no hay transmisión. Horario de referencia:
+  miércoles 7:30 p. m. y domingo 7:30 a. m. (hora de Lima, cierre 10:00 p. m.).
+- **Búsqueda general opcional**: al escribir en el buscador se consulta todo
+  YouTube con filtro cristiano (alabanza, adoración, predicación y podcasts) y
+  se descarta contenido claramente secular (reggaetón, parodias, karaoke, etc.).
 - **Dos proveedores**: YouTube Data API v3 si existe `YOUTUBE_API_KEY`;
   fallback automático a Innertube (`youtubei.js`) sin clave.
+
 - **Reproductor integrado** con la IFrame API de YouTube: play/pausa, anterior,
   siguiente, barra de progreso, volumen, silencio y pantalla completa.
 - **Cola de reproducción** persistente en la sesión, con reordenar, quitar y
@@ -32,7 +41,26 @@ personal (playlists, favoritos, historial y cola).
 - Tailwind CSS v4
 - `lucide-react`, `clsx`
 - Firebase (Auth + Firestore), `youtubei.js`
+- Feed público de YouTube (RSS) para el contenido de la iglesia
 - Vitest para pruebas unitarias
+
+## Contenido de la iglesia y transmisiones en vivo
+
+- **Fuente de las secciones**: `/api/church` lee el feed público
+  `https://www.youtube.com/feeds/videos.xml?channel_id=UC0XjfZF7rFUA9eS0Ok6pJvg`
+  (no requiere API key ni cuota) y clasifica cada video con el motor de
+  relevancia de `src/lib/christian.ts`.
+- **Detección del directo**: `/api/live` consulta la YouTube Data API v3 si hay
+  clave configurada; si no, lee la página `/live` del canal y comprueba si el
+  canonical apunta a un `watch?v=...`. El resultado se cachea 45 segundos.
+- **Horario de referencia** (zona `America/Lima`): miércoles 19:30–22:00 y
+  domingo 07:30–22:00. Se usa para mostrar la próxima transmisión y como
+  respaldo si YouTube no responde.
+- **Comportamiento del indicador**: parpadea en rojo cuando hay directo
+  confirmado, muestra `EN ESPERA` dentro de la ventana sin directo y `OFF`
+  fuera de horario. El cierre real lo determina YouTube.
+- **Configuración**: el canal y los horarios están en `src/lib/live.ts`.
+
 
 ## Requisitos
 
